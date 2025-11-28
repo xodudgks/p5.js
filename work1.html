@@ -3,41 +3,154 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>과제 1, 4 - p5.js</title>
+    <title>Project 01 & 04 | Cyber View</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Noto+Sans+KR:wght@300;500&display=swap" rel="stylesheet">
+    
     <style>
+        /* 1. 기본 세팅 */
         body {
-            background-color: #24243e;
+            margin: 0;
+            padding: 0;
+            background-color: #050510; /* 아주 어두운 남색 */
             color: white;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
             font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden;
+            perspective: 1000px; /* 3D 효과를 위한 원근감 */
         }
+
+        /* 2. 배경: 움직이는 3D 사이버 그리드 */
+        .cyber-grid {
+            position: absolute;
+            width: 200vw;
+            height: 200vh;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+            z-index: -2;
+            opacity: 0.2;
+            top: -50%;
+            left: -50%;
+        }
+
+        /* 그리드가 무한히 다가오는 애니메이션 */
+        @keyframes gridMove {
+            0% { transform: rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: rotateX(60deg) translateY(50px) translateZ(-200px); }
+        }
+
+        /* 3. 배경: 은은한 뒤쪽 오로라 빛 */
+        .aurora {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(120, 0, 255, 0.4), transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: blur(50px);
+            animation: pulse 4s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        /* 4. 타이틀 디자인 */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff;
+            z-index: 10;
+        }
+
+        /* 5. 캔버스(작품) 꾸미기 - 홀로그램 프레임 효과 */
         canvas {
-            border: 2px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.5), 
+                        0 0 60px rgba(120, 0, 255, 0.3); /* 네온 후광 */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            z-index: 10;
+            transition: transform 0.3s;
         }
+
+        canvas:hover {
+            transform: scale(1.02); /* 마우스 올리면 살짝 커짐 */
+            border-color: #00d2ff;
+        }
+
+        /* 6. 홈 버튼 디자인 (네온 캡슐) */
         .back-btn {
-            margin-top: 20px;
-            color: #aaa;
+            margin-top: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            border: 1px solid #aaa;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: 0.3s;
+            padding: 12px 30px;
+            border: 1px solid rgba(0, 210, 255, 0.5);
+            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .back-btn:hover { color: white; border-color: white; background: rgba(255,255,255,0.1); }
+
+        .back-btn:hover {
+            background: #00d2ff;
+            color: #000;
+            box-shadow: 0 0 20px #00d2ff;
+            font-weight: bold;
+        }
+
+        /* 7. CRT 모니터 스캔라인 효과 (화면 전체에 옛날 TV 같은 줄무늬) */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none; /* 클릭 통과 */
+            z-index: 999;
+            opacity: 0.3;
+        }
+
     </style>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     
     <script src="sketch.js"></script>
 </head>
 <body>
+    <div class="cyber-grid"></div>
+    <div class="aurora"></div>
+    <div class="scanlines"></div>
+
+    <h1>Project 01 & 04</h1>
+    
     <main></main>
-    <a href="index.html" class="back-btn">🏠 홈으로 돌아가기</a>
+
+    <a href="index.html" class="back-btn">
+        <span>◀</span> SYSTEM RETURN
+    </a>
+
 </body>
 </html>
