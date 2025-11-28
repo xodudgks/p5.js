@@ -1,19 +1,118 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 p5.js 프로젝트</title>
+    <title>My Creative Portfolio</title>
     <style>
-      body { text-align: center; padding-top: 20px; }
-      a { font-size: 20px; text-decoration: none; background: #eee; padding: 10px; border-radius: 5px; color: blue;}
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Noto+Sans+KR:wght@300;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh;
+            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* 배경에 은은한 빛 효과 */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(76, 161, 175, 0.3), transparent 70%);
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+            animation: move 10s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            z-index: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            max-width: 500px;
+            width: 80%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+        
+        p.subtitle {
+            color: #ccc;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(90deg, #F45C43 0%, #EB3349 100%);
+            box-shadow: 0 4px 15px rgba(244, 92, 67, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-    <script src="sketch.js"></script>
-  </head>
-  <body>
-    <main></main>
-    <br><br>
-    <a href="page2.html">👉 두 번째 작품 보러가기</a>
-  </body>
+</head>
+<body>
+    <div class="glow"></div>
+    
+    <div class="container">
+        <h1>Creative Works</h1>
+        <p class="subtitle">Global Media Dept. | Interactive Art</p>
+        
+        <div class="btn-group">
+            <a href="work1.html" class="btn">🎨 과제 1, 4 보러 가기</a>
+            <a href="work2.html" class="btn secondary">🚀 과제 2, 3 보러 가기</a>
+        </div>
+        
+        <footer>© 2025 Tae-Young Han. All rights reserved.</footer>
+    </div>
+</body>
 </html>
