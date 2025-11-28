@@ -3,154 +3,184 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 01 & 04 | Cyber View</title>
+    <title>Resonance of Unseen Instruments</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Noto+Sans+KR:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 1. 기본 세팅 */
+        /* 1. 기본 및 배경 설정 */
         body {
             margin: 0;
             padding: 0;
-            background-color: #050510; /* 아주 어두운 남색 */
+            background-color: #050510;
             color: white;
             height: 100vh;
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden; /* 전체 스크롤 막기 */
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: 'Noto Sans KR', sans-serif;
-            overflow: hidden;
-            perspective: 1000px; /* 3D 효과를 위한 원근감 */
         }
 
-        /* 2. 배경: 움직이는 3D 사이버 그리드 */
+        /* 배경 효과들 */
         .cyber-grid {
             position: absolute;
             width: 200vw;
             height: 200vh;
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
             transform: rotateX(60deg) translateY(-100px) translateZ(-200px);
             animation: gridMove 20s linear infinite;
             z-index: -2;
-            opacity: 0.2;
-            top: -50%;
-            left: -50%;
+            top: -50%; left: -50%;
         }
-
-        /* 그리드가 무한히 다가오는 애니메이션 */
         @keyframes gridMove {
             0% { transform: rotateX(60deg) translateY(0) translateZ(-200px); }
             100% { transform: rotateX(60deg) translateY(50px) translateZ(-200px); }
         }
 
-        /* 3. 배경: 은은한 뒤쪽 오로라 빛 */
-        .aurora {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(120, 0, 255, 0.4), transparent 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            filter: blur(50px);
-            animation: pulse 4s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
-        }
-
-        /* 4. 타이틀 디자인 */
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff;
-            z-index: 10;
-        }
-
-        /* 5. 캔버스(작품) 꾸미기 - 홀로그램 프레임 효과 */
-        canvas {
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.5), 
-                        0 0 60px rgba(120, 0, 255, 0.3); /* 네온 후광 */
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            z-index: 10;
-            transition: transform 0.3s;
-        }
-
-        canvas:hover {
-            transform: scale(1.02); /* 마우스 올리면 살짝 커짐 */
-            border-color: #00d2ff;
-        }
-
-        /* 6. 홈 버튼 디자인 (네온 캡슐) */
-        .back-btn {
-            margin-top: 30px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            padding: 12px 30px;
-            border: 1px solid rgba(0, 210, 255, 0.5);
-            border-radius: 30px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-            z-index: 10;
+        /* 2. 메인 레이아웃 (좌우 분할) */
+        .layout-container {
             display: flex;
+            width: 90%;
+            max-width: 1400px;
+            height: 85vh;
+            gap: 40px;
+            z-index: 10;
+        }
+
+        /* 왼쪽: 캔버스 영역 */
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
-        .back-btn:hover {
-            background: #00d2ff;
-            color: #000;
-            box-shadow: 0 0 20px #00d2ff;
-            font-weight: bold;
+        /* 캔버스 스타일 (p5가 생성할 캔버스) */
+        canvas {
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
         }
 
-        /* 7. CRT 모니터 스캔라인 효과 (화면 전체에 옛날 TV 같은 줄무늬) */
-        .scanlines {
+        /* 오른쪽: 텍스트 영역 */
+        .text-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border-left: 3px solid #00d2ff;
+            overflow-y: auto; /* 내용 많으면 스크롤 */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* 스크롤바 디자인 */
+        .text-area::-webkit-scrollbar { width: 8px; }
+        .text-area::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 4px; }
+        .text-area::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+
+        /* 텍스트 스타일링 */
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00d2ff;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin: 0 0 30px 0;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .content-body {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #ddd;
+            white-space: pre-wrap; /* 줄바꿈 유지 */
+        }
+        strong { color: #00d2ff; }
+
+        /* 홈 버튼 */
+        .home-btn {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-            pointer-events: none; /* 클릭 통과 */
-            z-index: 999;
-            opacity: 0.3;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            z-index: 20;
+            background: black;
         }
+        .home-btn:hover { background: #00d2ff; color: black; border-color: #00d2ff; }
 
+        /* 모바일 반응형 */
+        @media (max-width: 900px) {
+            body { overflow: auto; height: auto; padding: 20px 0; }
+            .layout-container { flex-direction: column; height: auto; }
+            .canvas-area { min-height: 450px; }
+            .home-btn { position: relative; bottom: auto; left: auto; transform: none; margin-top: 30px; display: inline-block;}
+            .layout-container { align-items: center; text-align: center; }
+            .text-area { text-align: left; }
+        }
     </style>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-    
     <script src="sketch.js"></script>
 </head>
 <body>
     <div class="cyber-grid"></div>
-    <div class="aurora"></div>
-    <div class="scanlines"></div>
 
-    <h1>Project 01 & 04</h1>
-    
-    <main></main>
+    <div class="layout-container">
+        <div class="canvas-area" id="canvas-holder"></div>
 
-    <a href="index.html" class="back-btn">
-        <span>◀</span> SYSTEM RETURN
-    </a>
+        <div class="text-area">
+            <h2>PROJECT 1, 4</h2>
+            <h1>Resonance of Unseen Instruments</h1>
+            <div class="content-body">
+이 작품은 현실의 악기들을 해체하고 재조합하여, 보이지 않는 울림과 감각의 흐름을 시각화한 음악적 생태계를 구축한다. 화면 중앙의 현악기는 더 이상 단일한 악기가 아니라, 몸체와 현 사이에 얽히는 곡선·파형·잔향들이 끊임없이 퍼져나가며 음이 아닌 ‘관계’로서의 음악을 제시한다.
 
+우측의 둥근 타악 형태, 좌측의 기타형 실루엣, 하단의 피아노 건반은 구체적이지만, 그 위를 스치는 반투명한 원, 파동, 입자들은 낯설게 변형되어 있다. 이는 음악이 실제로 들릴 때 인간이 경험하는 내적 파동—기억, 감정, 그리고 감각의 층위들을 시각적으로 번역한 것이다.
+
+곡선으로 이어지는 선형 궤적들은 소리의 물리적 파동이 아니라, 연주자가 악기를 다룰 때의 제스처, 호흡, 순간의 미세한 감정 변화를 추적하는 듯 흘러간다. 이 파동들은 서로 교차하거나 충돌하지 않고, 느슨하게 얽히며 <strong>하나의 거대한 공명장(Resonance Field)</strong>을 만들어낸다.
+
+어두운 배경 위에서 겹겹이 쌓이는 원과 도형, 흐르는 움직임은 마치 음악이 공간을 점유하는 방식을 시각적 언어로 기록한 지도처럼 보인다. 이때 악기들은 실체이면서도 동시에 ‘기억의 매개체’가 되어, 관객은 소리를 듣지 않아도 소리의 잔향을 ‘본다’.
+
+결국 이 작품은
+<em>“음악은 귀로 듣는 것이 아니라, 몸 전체로 공명하는 경험이다.”</em>
+라는 명제를 디지털 추상화로 펼쳐낸다.
+
+관객은 악기의 형태와 추상적 파동 사이에 숨겨진 ‘보이지 않는 음악’을 발견하며, 각자만의 청각적·감정적 서사를 완성하게 된다.
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn">◀ MAIN MENU</a>
+
+    <script>
+        window.onload = function() {
+            // p5가 만든 canvas 태그를 찾아서
+            const canvas = document.querySelector('canvas');
+            const holder = document.getElementById('canvas-holder');
+            // canvas-area 안으로 옮겨버림
+            if(canvas && holder) {
+                holder.appendChild(canvas);
+            }
+        }
+    </script>
 </body>
 </html>
