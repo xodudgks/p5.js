@@ -3,154 +3,132 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 02 & 03 | Cyber View</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Noto+Sans+KR:wght@300;500&display=swap" rel="stylesheet">
+    <title>Following Eyes, Surprising Mind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 1. 기본 세팅 */
+        /* 기본 설정 (테마색: 핑크/보라) */
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #050510; /* 아주 어두운 남색 */
+            margin: 0; padding: 0;
+            background-color: #1a0b2e; /* 짙은 보라 배경 */
             color: white;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             font-family: 'Noto Sans KR', sans-serif;
             overflow: hidden;
-            perspective: 1000px; /* 3D 효과를 위한 원근감 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 2. 배경: 움직이는 3D 사이버 그리드 */
-        .cyber-grid {
-            position: absolute;
-            width: 200vw;
-            height: 200vh;
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: rotateX(60deg) translateY(-100px) translateZ(-200px);
-            animation: gridMove 20s linear infinite;
-            z-index: -2;
-            opacity: 0.2;
-            top: -50%;
-            left: -50%;
-        }
-
-        /* 그리드가 무한히 다가오는 애니메이션 */
-        @keyframes gridMove {
-            0% { transform: rotateX(60deg) translateY(0) translateZ(-200px); }
-            100% { transform: rotateX(60deg) translateY(50px) translateZ(-200px); }
-        }
-
-        /* 3. 배경: 은은한 뒤쪽 오로라 빛 */
+        /* 배경 효과 (오로라) */
         .aurora {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(120, 0, 255, 0.4), transparent 70%);
+            top: 50%; left: 50%;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(255, 0, 150, 0.2), transparent 70%);
             transform: translate(-50%, -50%);
+            filter: blur(80px);
             z-index: -1;
-            filter: blur(50px);
-            animation: pulse 4s infinite alternate;
+            animation: pulse 5s infinite alternate;
         }
+        @keyframes pulse { from { opacity: 0.5; } to { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); } }
 
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
-        }
-
-        /* 4. 타이틀 디자인 */
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff;
-            z-index: 10;
-        }
-
-        /* 5. 캔버스(작품) 꾸미기 - 홀로그램 프레임 효과 */
-        canvas {
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.5), 
-                        0 0 60px rgba(120, 0, 255, 0.3); /* 네온 후광 */
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            z-index: 10;
-            transition: transform 0.3s;
-        }
-
-        canvas:hover {
-            transform: scale(1.02); /* 마우스 올리면 살짝 커짐 */
-            border-color: #00d2ff;
-        }
-
-        /* 6. 홈 버튼 디자인 (네온 캡슐) */
-        .back-btn {
-            margin-top: 30px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            padding: 12px 30px;
-            border: 1px solid rgba(0, 210, 255, 0.5);
-            border-radius: 30px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-            z-index: 10;
+        /* 레이아웃 (work1과 동일 구조) */
+        .layout-container {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            width: 90%;
+            max-width: 1400px;
+            height: 85vh;
+            gap: 40px;
+            z-index: 10;
         }
 
-        .back-btn:hover {
-            background: #00d2ff;
-            color: #000;
-            box-shadow: 0 0 20px #00d2ff;
-            font-weight: bold;
+        .canvas-area {
+            flex: 1;
+            display: flex; justify-content: center; align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 150, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            position: relative;
         }
+        canvas { border-radius: 8px; box-shadow: 0 0 25px rgba(255, 0, 150, 0.3); }
 
-        /* 7. CRT 모니터 스캔라인 효과 (화면 전체에 옛날 TV 같은 줄무늬) */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-            pointer-events: none; /* 클릭 통과 */
-            z-index: 999;
-            opacity: 0.3;
+        .text-area {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            border-right: 3px solid #ff0096; /* 핑크색 포인트 */
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
         }
+        .text-area::-webkit-scrollbar { width: 8px; }
+        .text-area::-webkit-scrollbar-thumb { background: #ff0096; border-radius: 4px; }
 
+        h2 { font-family: 'Orbitron', sans-serif; color: #ff0096; font-size: 0.9rem; margin-bottom: 5px; letter-spacing: 2px; }
+        h1 {
+            font-size: 2.2rem; margin: 0 0 30px 0;
+            background: linear-gradient(90deg, #fff, #ffb6e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .content-body { font-size: 1.05rem; line-height: 1.8; color: #e0d0e0; white-space: pre-wrap; }
+        strong { color: #ff0096; font-weight: 700; }
+
+        .home-btn {
+            position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px; border-radius: 30px; font-size: 0.8rem;
+            transition: 0.3s; z-index: 20; background: black;
+        }
+        .home-btn:hover { background: #ff0096; color: white; border-color: #ff0096; }
+
+        @media (max-width: 900px) {
+            body { overflow: auto; height: auto; padding: 20px 0; }
+            .layout-container { flex-direction: column; height: auto; }
+            .canvas-area { min-height: 450px; }
+            .home-btn { position: relative; bottom: auto; left: auto; transform: none; margin-top: 30px; display: inline-block;}
+        }
     </style>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     
     <script src="sketch2.js"></script>
 </head>
 <body>
-    <div class="cyber-grid"></div>
     <div class="aurora"></div>
-    <div class="scanlines"></div>
 
-    <h1>Project 02 & 03</h1>
-    
-    <main></main>
+    <div class="layout-container">
+        <div class="canvas-area" id="canvas-holder"></div>
+        <div class="text-area">
+            <h2>PROJECT 2, 3</h2>
+            <h1>Following Eyes, Surprising Mind</h1>
+            <div class="content-body">
+이 작품은 <strong>관객의 움직임과 입력에 즉각 반응하는 ‘인터랙티브 학생 캐릭터’</strong>를 중심으로 구성된다. 화면 속 학생은 단순한 정지된 그림이 아니라, 관객의 존재를 적극적으로 감지하며 살아 있는 듯한 반응성을 드러낸다.
 
-    <a href="index.html" class="back-btn">
-        <span>◀</span> SYSTEM RETURN
-    </a>
+가장 먼저 눈에 띄는 기능은 클릭 시, 학생의 눈동자가 마우스 커서를 따라가며 움직이는 동작이다. 이는 캐릭터와 관객 사이에 가벼운 대화를 만들어내며, 화면과 현실의 경계를 부드럽게 허문다. 사용자가 시선을 움직이는 만큼 캐릭터도 이를 즉각적으로 따라가며, 마치 “지금 너를 보고 있어”라고 말하는 듯한 존재감을 만들어낸다.
 
+또한 <strong>스페이스 바를 누르는 순간</strong>, 캐릭터는 갑작스러운 상황을 맞닥뜨린 듯 놀란 표정으로 변한다. 이는 단순한 표정 전환을 넘어, 관객의 행동이 캐릭터의 감정 변화를 직접 ‘유발’한다는 점에서 중요한 상호작용적 장치를 이룬다.
+
+관객은 이 학생의 정서적 리액션을 통해, 평면 이미지를 넘어선 디지털 감정 인터페이스를 경험하게 된다.
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn">◀ MAIN MENU</a>
+
+    <script>
+        window.onload = function() {
+            const canvas = document.querySelector('canvas');
+            const holder = document.getElementById('canvas-holder');
+            if(canvas && holder) {
+                holder.appendChild(canvas);
+            }
+        }
+    </script>
 </body>
 </html>
