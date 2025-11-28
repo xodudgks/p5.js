@@ -3,116 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Creative Portfolio</title>
+    <title>Tae-Young Han | AI Media Art Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+KR:wght@300;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Noto+Sans+KR:wght@300;700&display=swap');
-
-        body {
+        /* 기본 설정 */
+        body, html {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            height: 100vh;
-            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+            height: 100%;
+            overflow: hidden; /* 스크롤바 없애기 */
+            background-color: #000; /* p5 로딩 전 검은 배경 */
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* p5.js 캔버스를 배경으로 설정 */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* 콘텐츠 뒤로 보내기 */
+            /* 약간의 블러로 몽환적인 느낌 추가 (선택사항) */
+            /* filter: blur(2px) brightness(0.8); */
+        }
+
+        /* 메인 콘텐츠 컨테이너 */
+        .container {
+            position: relative;
+            z-index: 1;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        /* 배경에 은은한 빛 효과 */
-        .glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(76, 161, 175, 0.3), transparent 70%);
-            top: -100px;
-            left: -100px;
-            z-index: 0;
-            animation: move 10s infinite alternate;
-        }
-
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(50px, 50px); }
-        }
-
-        .container {
-            z-index: 1;
+            align-items: center;
             text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            max-width: 500px;
-            width: 80%;
+            color: white;
+            /* 배경과 어우러지는 유리 질감 */
+            background: rgba(15, 12, 41, 0.3);
+            backdrop-filter: blur(5px);
+            /* 테두리 빛 효과 */
+            box-shadow: inset 0 0 100px rgba(123, 31, 162, 0.2);
         }
 
+        /* 제목 스타일 (AI 사이버펑크 느낌) */
         h1 {
-            font-size: 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
             margin-bottom: 0.5rem;
-            letter-spacing: -1px;
-        }
-        
-        p.subtitle {
-            color: #ccc;
-            margin-bottom: 3rem;
-            font-weight: 300;
+            letter-spacing: 2px;
+            /* 텍스트 그라데이션 및 네온 효과 */
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00dbde);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(187, 0, 255, 0.5), 0 0 40px rgba(0, 0, 255, 0.3);
+            animation: titleGlow 3s infinite alternate;
         }
 
+        @keyframes titleGlow {
+            from { filter: brightness(1); scale: 1; }
+            to { filter: brightness(1.3); scale: 1.02; }
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: #b39ddb; /* 연한 보라색 */
+            margin-bottom: 4rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* 버튼 그룹 및 스타일 */
         .btn-group {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            gap: 25px;
         }
 
         .btn {
-            background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-            border: none;
-            padding: 15px 30px;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
+            position: relative;
             text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 50px;
+            overflow: hidden;
+            transition: 0.3s all ease;
+            /* 은은한 보라색 그라데이션 배경 */
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            /* 네온 빛 번짐 효과 */
+            box-shadow: 0 0 20px rgba(123, 31, 162, 0.5), 
+                        inset 0 0 10px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* 두 번째 버튼 색상 (조금 더 핑크빛) */
         .btn.secondary {
-            background: linear-gradient(90deg, #F45C43 0%, #EB3349 100%);
-            box-shadow: 0 4px 15px rgba(244, 92, 67, 0.3);
+            background: linear-gradient(45deg, #b721ff, #21d4fd);
+            box-shadow: 0 0 20px rgba(183, 33, 255, 0.5),
+                        inset 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
+        /* 마우스 올렸을 때 효과 */
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px) scale(1.05);
+            /* 더 강렬한 빛 */
+            box-shadow: 0 0 40px rgba(123, 31, 162, 0.8),
+                        0 0 80px rgba(37, 117, 252, 0.4);
+            letter-spacing: 2px; /* 글자 간격 넓어짐 */
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 0 40px rgba(183, 33, 255, 0.8),
+                        0 0 80px rgba(33, 212, 253, 0.4);
+        }
+
+        /* 버튼 안에 빛이 지나가는 애니메이션 효과 */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         footer {
-            margin-top: 2rem;
+            position: absolute;
+            bottom: 20px;
             font-size: 0.8rem;
-            color: #aaa;
+            color: rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
 <body>
-    <div class="glow"></div>
-    
+    <div id="bg-canvas"></div>
+
     <div class="container">
-        <h1>Creative Works</h1>
-        <p class="subtitle">Global Media Dept. | Interactive Art</p>
+        <h1>DIGITAL<br>BEYOND IMAGINATION</h1>
+        <p class="subtitle">SSU Global Media | Interactive Portfolio</p>
         
         <div class="btn-group">
-            <a href="work1.html" class="btn">🎨 과제 1, 4 보러 가기</a>
-            <a href="work2.html" class="btn secondary">🚀 과제 2, 3 보러 가기</a>
+            <a href="work1.html" class="btn">PROJECTS 1 & 4</a>
+            <a href="work2.html" class="btn secondary">PROJECTS 2 & 3</a>
         </div>
         
-        <footer>© 2025 Tae-Young Han. All rights reserved.</footer>
+        <footer>© 2025 Tae-Young Han. Powered by p5.js & Creative Coding.</footer>
     </div>
+
+    <script>
+        // AI 네트워크 느낌의 파티클 시스템
+        let particles = [];
+        const numParticles = 150; // 파티클 개수
+
+        function setup() {
+            let canvas = createCanvas(windowWidth, windowHeight);
+            canvas.parent('bg-canvas'); // bg-canvas div 안에 캔버스 넣기
+            background(0);
+            // 초기 파티클 생성
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function draw() {
+            // 잔상 효과를 위해 투명도 있는 검은색 배경을 계속 덮음
+            background(10, 10, 30, 25); 
+
+            // 모든 파티클 업데이트 및 그리기
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                // 파티클끼리 연결선 그리기 (거리가 가까울 때만)
+                particles[i].connect(particles.slice(i + 1));
+            }
+        }
+
+        // 창 크기 조절 시 캔버스 크기도 맞춤
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+            background(0);
+        }
+
+        // 파티클 클래스 정의
+        class Particle {
+            constructor() {
+                this.pos = createVector(random(width), random(height));
+                this.vel = createVector(random(-1, 1), random(-1, 1));
+                this.size = random(1, 3);
+                // 색상 팔레트 (보라, 파랑, 핑크 계열)
+                this.colors = [
+                    color(148, 0, 211, 150), // 보라
+                    color(75, 0, 130, 150),  // 남색
+                    color(0, 0, 255, 150),   // 파랑
+                    color(255, 20, 147, 150) // 딥핑크
+                ];
+                this.color = random(this.colors);
+            }
+
+            update() {
+                this.pos.add(this.vel);
+                // 화면 밖으로 나가면 반대편에서 나오게 (토러스 효과)
+                if (this.pos.x < 0) this.pos.x = width;
+                if (this.pos.x > width) this.pos.x = 0;
+                if (this.pos.y < 0) this.pos.y = height;
+                if (this.pos.y > height) this.pos.y = 0;
+
+                // 마우스와 상호작용 (마우스 근처에서 도망가거나 끌려옴)
+                let mouse = createVector(mouseX, mouseY);
+                let dir = p5.Vector.sub(mouse, this.pos);
+                if (dir.mag() < 150) {
+                    dir.setMag(0.2);
+                    this.vel.sub(dir); // 마우스에서 멀어지려는 힘
+                }
+                this.vel.limit(2); // 속도 제한
+            }
+
+            draw() {
+                noStroke();
+                fill(this.color);
+                ellipse(this.pos.x, this.pos.y, this.size);
+            }
+
+            // 다른 파티클들과의 거리를 계산해서 선 그리기
+            connect(others) {
+                for (let other of others) {
+                    let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
+                    // 거리가 120 픽셀 미만일 때만 연결선 그리기
+                    if (d < 120) {
+                        // 거리에 따라 선의 투명도 조절 (가까울수록 진하게)
+                        let alpha = map(d, 0, 120, 150, 0);
+                        stroke(lerpColor(this.color, other.color, 0.5));
+                        stroke(red(this.color), green(this.color), blue(this.color), alpha);
+                        strokeWeight(0.5);
+                        line(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
